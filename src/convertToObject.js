@@ -9,25 +9,16 @@
 function convertToObject(sourceString) {
   // write your code here
   const res = {};
-  const lines = sourceString.split('\n');
-
-  let currentProperty = null;
-
-  for (let line of lines) {
-    line = line.trim();
-    if (line === '') continue;
-
-    if (line.includes(':')) {
-      const [property, value] = line.split(':');
-      currentProperty = property.trim();
-      res[currentProperty] = value.trim();
-    } else {
-      res[currentProperty] += ` ${line.trim()}`;
+  
+  sourceString.split(';').map(part => part.trim()).filter(Boolean).forEach(part => {
+    const [key, ...valueParts] = part.split(':');
+    if (key && valueParts.length > 0) {
+      const value = valueParts.join(':').trim();
+      res[key.trim()] = value;
     }
-  }
+  });
 
   return res;
-
 }
 
 module.exports = convertToObject;
